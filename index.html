@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>New Zealand Social Charitable Trust Board | 网站建设中</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #f0f0f0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 静态背景纹理 — 网格 + 明暗点阵（完全静止） */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(#1a1a1a 1px, transparent 1px),
+                linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.28;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 闪光粒子容器 — 星星闪烁点缀 */
+        .flashing-lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .flash {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 80%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(1px);
+            animation: flickerRandom 2.8s infinite ease-in-out;
+        }
+
+        @keyframes flickerRandom {
+            0% { opacity: 0; transform: scale(0.6);}
+            15% { opacity: 0.9; transform: scale(2);}
+            35% { opacity: 0.2; transform: scale(1);}
+            65% { opacity: 0.8; transform: scale(2.4);}
+            100% { opacity: 0; transform: scale(0.8);}
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 20;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 2rem 2rem;  /* 底部内边距减少，整体上移空间 */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* 头部区域 - 已清空 */
+        .header-area {
+            margin-bottom: 0.5rem;
+        }
+
+        /* 核心内容 */
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.5rem 0 1.5rem;  /* 底部内边距减少，让footer自然上移 */
+        }
+
+        .trust-title {
+            font-size: clamp(2.4rem, 7vw, 5.2rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(115deg, #FFFFFF 25%, #b0b0b0 80%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .construction-message {
+            font-size: clamp(1rem, 4vw, 1.55rem);
+            color: #d4d4d4;
+            max-width: 780px;
+            margin: 1rem auto;
+            font-weight: 400;
+            border-left: 3px solid rgba(255,255,255,0.4);
+            padding-left: 1.5rem;
+            text-align: left;
+        }
+
+        .construction-message strong {
+            color: #ffffff;
+            font-weight: 500;
+            text-shadow: 0 0 3px rgba(255,255,240,0.5);
+            animation: gentleFlash 2.3s infinite alternate;
+        }
+        @keyframes gentleFlash {
+            0% { text-shadow: 0 0 0px rgba(255,255,255,0.1);}
+            100% { text-shadow: 0 0 7px rgba(255,255,250,0.5);}
+        }
+
+        .coming-soon-card {
+            background: rgba(8,8,8,0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem 2.8rem;
+            margin: 2rem auto 1.5rem;  /* 底部外边距减少 */
+            width: fit-content;
+            min-width: 280px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 25px 40px -18px rgba(0,0,0,0.6);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            position: relative;
+            animation: cardBreathing 5s infinite alternate;
+        }
+        @keyframes cardBreathing {
+            0% { border-color: rgba(255,255,255,0.15); box-shadow: 0 25px 40px -18px rgba(0,0,0,0.6);}
+            100% { border-color: rgba(255,255,255,0.3); box-shadow: 0 30px 50px -20px rgba(0,0,0,0.8);}
+        }
+        .coming-soon-card:hover {
+            transform: scale(1.01);
+            border-color: rgba(255,255,255,0.45);
+        }
+
+        .coming-soon-card p {
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+            font-weight: 300;
+        }
+
+        .eta-text {
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            color: #9b9b9b;
+        }
+
+        .flash-divider {
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, #ffffff, #6a6a6a, #ffffff);
+            margin: 1.4rem auto;
+        }
+
+        /* 联系链接 - 仅保留邮箱 */
+        .contact-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0 0.5rem;  /* 底部外边距减少 */
+        }
+        .contact-item {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px dotted rgba(255,255,255,0.3);
+            padding-bottom: 3px;
+            cursor: pointer;
+        }
+        .contact-item:hover {
+            color: white;
+            border-bottom-color: white;
+        }
+
+        /* 底部footer - 上移约2格间距，减少顶部边距并调整内边距 */
+        .footer-bar {
+            margin-top: 1.5rem;      /* 从4rem减到1.5rem，上移明显 */
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+        }
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .acknowledgement-text {
+            font-size: 1rem;
+            color: #b0b0b0;
+            letter-spacing: 0.3px;
+            font-weight: 450;
+        }
+        .copyright-text {
+            font-size: 1rem;
+            color: #c5c5c5;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+        .designer-credit {
+            font-size: 1rem;
+            color: #d4d4d4;
+            background: rgba(255,255,255,0.04);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 32px;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+            margin-top: 2px;
+            transition: all 0.2s ease;
+        }
+        .designer-credit:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        @media (max-width: 700px) {
+            .main-container {
+                padding: 1.5rem 1.5rem 1.2rem;
+            }
+            .coming-soon-card {
+                padding: 1.5rem;
+                width: 100%;
+                margin: 1.5rem auto 1rem;
+            }
+            .footer-bar {
+                margin-top: 1rem;
+                padding-top: 0.8rem;
+            }
+            .acknowledgement-text,
+            .copyright-text,
+            .designer-credit {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 漂浮光晕 — 缓慢流动效果 */
+        .shimmer-sphere {
+            position: fixed;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(55px);
+            animation: floatSlow 22s infinite alternate;
+        }
+
+        @keyframes floatSlow {
+            0% { transform: translate(0%, 0%) scale(1); opacity: 0.3; }
+            100% { transform: translate(6%, 4%) scale(1.25); opacity: 0.6; }
+        }
+
+        /* 卡片内微小闪光粒子动画 */
+        .card-sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(0.6px);
+            animation: sparkleFade 1s ease-out forwards;
+        }
+        @keyframes sparkleFade {
+            0% { transform: scale(0.5); opacity: 0.9; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+<div class="flashing-lights" id="flashContainer"></div>
+<div class="shimmer-sphere" style="bottom: -100px; left: -80px;"></div>
+<div class="shimmer-sphere" style="top: 20%; right: -50px; width: 360px; height: 360px; animation-duration: 26s;"></div>
+
+<div class="main-container">
+    <!-- 头部区域已清空，不再显示任何品牌文字 -->
+    <div class="header-area"></div>
+
+    <div class="hero-section">
+        <div class="trust-title">
+            New Zealand Social <br> Charitable Trust Board
+        </div>
+        
+        <div class="construction-message">
+            <strong>✦ Website Under Construction ✦</strong><br>
+            Our digital home is currently being built. We're crafting a space dedicated to social empowerment, 
+            community resilience, and meaningful change across New Zealand. Kia ora.
+        </div>
+
+        <div class="coming-soon-card" id="comingSoonCard">
+            <p>🌱  Coming Soon  🌱</p>
+            <div class="flash-divider"></div>
+            <div class="eta-text">Building a better future — stay connected</div>
+        </div>
+
+        <!-- 仅保留邮箱联系方式 -->
+        <div class="contact-links">
+            <div class="contact-item" id="emailHint">✉️  nzcharityboard@gmail.com</div>
+        </div>
+    </div>
+
+    <!-- 底部区域整体上移约2格间距 -->
+    <div class="footer-bar">
+        <div class="footer-left">
+            <div class="acknowledgement-text">🌿 We acknowledge mana whenua across Aotearoa — tēnā koutou.</div>
+            <div class="copyright-text">© 2026 New Zealand Social Charitable Trust Board</div>
+            <div class="designer-credit">✨ Design & code by Dr. Cache Y ✨</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 生成动态闪光粒子 (星星闪烁点缀)
+    function generateFlashes(count = 140) {
+        const container = document.getElementById('flashContainer');
+        if (!container) return;
+        for (let i = 0; i < count; i++) {
+            const flash = document.createElement('div');
+            flash.classList.add('flash');
+            const size = Math.random() * 7 + 2;
+            flash.style.width = `${size}px`;
+            flash.style.height = `${size}px`;
+            flash.style.left = `${Math.random() * 100}%`;
+            flash.style.top = `${Math.random() * 100}%`;
+            const duration = Math.random() * 2.2 + 1.2;
+            flash.style.animationDuration = `${duration}s`;
+            flash.style.animationDelay = `${Math.random() * 6}s`;
+            container.appendChild(flash);
+        }
+    }
+
+    // 鼠标轨迹闪光效果
+    let mouseTrace = null;
+    function initMouseSpark() {
+        document.body.addEventListener('mousemove', (e) => {
+            if (!mouseTrace) {
+                const spark = document.createElement('div');
+                spark.style.position = 'fixed';
+                spark.style.width = '9px';
+                spark.style.height = '9px';
+                spark.style.borderRadius = '50%';
+                spark.style.backgroundColor = 'rgba(255,255,240,0.55)';
+                spark.style.filter = 'blur(2.5px)';
+                spark.style.pointerEvents = 'none';
+                spark.style.zIndex = '9999';
+                spark.style.transition = 'opacity 0.4s ease';
+                document.body.appendChild(spark);
+                mouseTrace = spark;
+            }
+            mouseTrace.style.left = e.clientX - 5 + 'px';
+            mouseTrace.style.top = e.clientY - 5 + 'px';
+            mouseTrace.style.opacity = '0.9';
+            clearTimeout(window.sparkHide);
+            window.sparkHide = setTimeout(() => {
+                if (mouseTrace) mouseTrace.style.opacity = '0';
+            }, 180);
+        });
+    }
+
+    // 邮箱点击复制提示
+    function setupEmailCopy() {
+        const emailDiv = document.getElementById('emailHint');
+
+        const showToast = (msg) => {
+            const toast = document.createElement('div');
+            toast.innerText = msg;
+            toast.style.position = 'fixed';
+            toast.style.bottom = '30px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = '#1c1c1c';
+            toast.style.color = '#fff';
+            toast.style.padding = '12px 28px';
+            toast.style.borderRadius = '60px';
+            toast.style.fontSize = '0.85rem';
+            toast.style.border = '1px solid rgba(255,255,255,0.2)';
+            toast.style.backdropFilter = 'blur(12px)';
+            toast.style.zIndex = '10000';
+            toast.style.fontWeight = '400';
+            toast.style.boxShadow = '0 12px 25px rgba(0,0,0,0.5)';
+            toast.style.pointerEvents = 'none';
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 2100);
+        };
+
+        if (emailDiv) {
+            emailDiv.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = "nzcharityboard@gmail.com";
+                navigator.clipboard.writeText(email).then(() => {
+                    showToast('📧 邮箱地址已复制: nzcharityboard@gmail.com');
+                }).catch(() => {
+                    showToast('📧 联系邮箱: nzcharityboard@gmail.com');
+                });
+            });
+        }
+    }
+
+    // 额外漂浮闪光的随机光晕
+    function addFloatingGlowBursts() {
+        const glowParent = document.createElement('div');
+        glowParent.style.position = 'fixed';
+        glowParent.style.top = '0';
+        glowParent.style.left = '0';
+        glowParent.style.width = '100%';
+        glowParent.style.height = '100%';
+        glowParent.style.pointerEvents = 'none';
+        glowParent.style.zIndex = '6';
+        document.body.appendChild(glowParent);
+        
+        setInterval(() => {
+            const burst = document.createElement('div');
+            const size = Math.random() * 70 + 30;
+            burst.style.position = 'absolute';
+            burst.style.width = `${size}px`;
+            burst.style.height = `${size}px`;
+            burst.style.background = `radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,240,0) 80%)`;
+            burst.style.borderRadius = '50%';
+            burst.style.left = `${Math.random() * 100}%`;
+            burst.style.top = `${Math.random() * 100}%`;
+            burst.style.filter = 'blur(12px)';
+            burst.style.opacity = '0.5';
+            burst.style.animation = 'fadeAway 1.2s forwards';
+            if (!document.querySelector('#fadeKeyframes')) {
+                const styleSheet = document.createElement('style');
+                styleSheet.id = 'fadeKeyframes';
+                styleSheet.innerHTML = `@keyframes fadeAway { 0% { opacity: 0.5; transform: scale(0.4); } 100% { opacity: 0; transform: scale(1.6); } }`;
+                document.head.appendChild(styleSheet);
+            }
+            glowParent.appendChild(burst);
+            setTimeout(() => burst.remove(), 1300);
+        }, 1700);
+    }
+
+    // 为coming-soon卡片增加微小的动态闪光粒子
+    function enhanceCardSparkle() {
+        const card = document.querySelector('.coming-soon-card');
+        if (!card) return;
+        setInterval(() => {
+            const shimmerDot = document.createElement('div');
+            shimmerDot.classList.add('card-sparkle');
+            shimmerDot.style.left = `${Math.random() * 100}%`;
+            shimmerDot.style.top = `${Math.random() * 100}%`;
+            card.style.position = 'relative';
+            card.appendChild(shimmerDot);
+            setTimeout(() => shimmerDot.remove(), 1000);
+        }, 950);
+    }
+
+    function initAllFlash() {
+        generateFlashes(140);
+        initMouseSpark();
+        setupEmailCopy();
+        addFloatingGlowBursts();
+        enhanceCardSparkle();
+        console.log("%c✨ New Zealand Social Charitable Trust Board ✨ | Design by Dr. Cache Y | 2026 | Stars twinkle, footer moved up", "color: #eeeeee; background: #111; font-size: 13px; padding: 6px 12px; border-radius: 10px; font-weight: 500;");
+    }
+
+    window.addEventListener('DOMContentLoaded', initAllFlash);
+</script>
+</body>
+</html>
