@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>New Zealand Social Charitable Trust Board | 网站建设中</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #f0f0f0;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 黑白基调 + 动态闪光纹理 */
+        .flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            background: repeating-linear-gradient(
+                120deg,
+                rgba(255, 255, 255, 0.02) 0px,
+                rgba(255, 255, 255, 0.02) 2px,
+                transparent 2px,
+                transparent 8px
+            );
+        }
+
+        /* 闪光粒子容器 — 营造"flash"闪烁点缀 */
+        .flashing-lights {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .flash {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 80%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(1px);
+            animation: flickerRandom 2.8s infinite ease-in-out;
+        }
+
+        @keyframes flickerRandom {
+            0% { opacity: 0; transform: scale(0.6);}
+            15% { opacity: 0.9; transform: scale(2);}
+            35% { opacity: 0.2; transform: scale(1);}
+            65% { opacity: 0.8; transform: scale(2.4);}
+            100% { opacity: 0; transform: scale(0.8);}
+        }
+
+        /* 背景网格 */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(#1a1a1a 1px, transparent 1px),
+                linear-gradient(90deg, #1a1a1a 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.28;
+            z-index: 0;
+        }
+
+        .main-container {
+            position: relative;
+            z-index: 20;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 2rem 2rem 3rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* 头部区域 */
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 3.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 1.5rem;
+        }
+
+        .logo-brand h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #ffffff 0%, #c0c0c0 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo-brand span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: #aaa;
+            display: block;
+            letter-spacing: 0.3px;
+            margin-top: 4px;
+        }
+
+        .status-badge {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+            padding: 0.5rem 1.3rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            border: 0.5px solid rgba(255,255,255,0.2);
+            font-weight: 400;
+        }
+
+        /* 核心内容 */
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem 0 4rem;
+        }
+
+        .trust-title {
+            font-size: clamp(2.4rem, 7vw, 5.2rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(115deg, #FFFFFF 25%, #b0b0b0 80%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .construction-message {
+            font-size: clamp(1rem, 4vw, 1.55rem);
+            color: #d4d4d4;
+            max-width: 780px;
+            margin: 1rem auto;
+            font-weight: 400;
+            border-left: 3px solid rgba(255,255,255,0.4);
+            padding-left: 1.5rem;
+            text-align: left;
+        }
+
+        .construction-message strong {
+            color: #ffffff;
+            font-weight: 500;
+            text-shadow: 0 0 3px rgba(255,255,240,0.5);
+        }
+
+        .coming-soon-card {
+            background: rgba(8,8,8,0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem 2.8rem;
+            margin: 2.5rem auto;
+            width: fit-content;
+            min-width: 280px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 25px 40px -18px rgba(0,0,0,0.6);
+            transition: all 0.2s ease;
+        }
+
+        .coming-soon-card p {
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+            font-weight: 300;
+        }
+
+        .eta-text {
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            color: #9b9b9b;
+        }
+
+        .flash-divider {
+            width: 70px;
+            height: 2px;
+            background: linear-gradient(90deg, #ffffff, #6a6a6a, #ffffff);
+            margin: 1.4rem auto;
+        }
+
+        /* 联系链接 - 仅保留邮箱 */
+        .contact-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0 1rem;
+        }
+        .contact-item {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px dotted rgba(255,255,255,0.3);
+            padding-bottom: 3px;
+            cursor: pointer;
+        }
+        .contact-item:hover {
+            color: white;
+            border-bottom-color: white;
+        }
+
+        /* 底部footer - 增大文字并突出显示 */
+        .footer-bar {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+        }
+        .footer-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .acknowledgement-text {
+            font-size: 1rem;
+            color: #b0b0b0;
+            letter-spacing: 0.3px;
+            font-weight: 450;
+        }
+        .copyright-text {
+            font-size: 1rem;
+            color: #c5c5c5;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+        .designer-credit {
+            font-size: 1rem;
+            color: #d4d4d4;
+            background: rgba(255,255,255,0.04);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 32px;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+            margin-top: 6px;
+        }
+        /* 三个核心文本都更显著，稍微加一点微弱光效 */
+        .copyright-text, .designer-credit, .acknowledgement-text {
+            text-shadow: 0 0 2px rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 700px) {
+            .main-container {
+                padding: 1.5rem;
+            }
+            .coming-soon-card {
+                padding: 1.5rem;
+                width: 100%;
+            }
+            .header-area {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .footer-bar {
+                margin-top: 2.5rem;
+                padding-top: 1.5rem;
+            }
+            .acknowledgement-text,
+            .copyright-text,
+            .designer-credit {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 漂浮光晕 */
+        .shimmer-sphere {
+            position: fixed;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            filter: blur(55px);
+            animation: floatSlow 22s infinite alternate;
+        }
+
+        @keyframes floatSlow {
+            0% { transform: translate(0%, 0%) scale(1); opacity: 0.3; }
+            100% { transform: translate(6%, 4%) scale(1.25); opacity: 0.6; }
+        }
+
+        .tiny-dot {
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 6px;
+            opacity: 0.7;
+            animation: pulseDot 1.8s infinite;
+        }
+        @keyframes pulseDot {
+            0% { opacity: 0.4; transform: scale(0.7);}
+            100% { opacity: 1; transform: scale(1.2);}
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+<div class="flashing-lights" id="flashContainer"></div>
+<div class="flash-overlay"></div>
+<div class="shimmer-sphere" style="bottom: -100px; left: -80px;"></div>
+<div class="shimmer-sphere" style="top: 20%; right: -50px; width: 360px; height: 360px; animation-duration: 26s;"></div>
+
+<div class="main-container">
+    <div class="header-area">
+        <div class="logo-brand">
+            <h1>NZ Social Charitable Trust</h1>
+            <span>New Zealand Social Charitable Trust Board · Aotearoa</span>
+        </div>
+        <div class="status-badge">
+            <span class="tiny-dot"></span>  Community First · Building Hope
+        </div>
+    </div>
+
+    <div class="hero-section">
+        <div class="trust-title">
+            New Zealand Social <br> Charitable Trust Board
+        </div>
+        
+        <div class="construction-message">
+            <strong>✦ Website Under Construction ✦</strong><br>
+            Our digital home is currently being built. We're crafting a space dedicated to social empowerment, 
+            community resilience, and meaningful change across New Zealand. Kia ora.
+        </div>
+
+        <div class="coming-soon-card">
+            <p>🌱  Coming Soon  🌱</p>
+            <div class="flash-divider"></div>
+            <div class="eta-text">Building a better future — stay connected</div>
+        </div>
+
+        <!-- 仅保留邮箱联系方式 -->
+        <div class="contact-links">
+            <div class="contact-item" id="emailHint">✉️  nzcharityboard@gmail.com</div>
+        </div>
+        <!-- 移除之前的小号致谢行，将该内容整合到底部并放大字号 -->
+    </div>
+
+    <div class="footer-bar">
+        <div class="footer-left">
+            <div class="acknowledgement-text">🌿 We acknowledge mana whenua across Aotearoa — tēnā koutou.</div>
+            <div class="copyright-text">© 2026 New Zealand Social Charitable Trust Board</div>
+            <div class="designer-credit">✨ Design & code by Dr. Cache Y ✨</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 生成动态闪光粒子 (FLASH 缀饰)
+    function generateFlashes(count = 140) {
+        const container = document.getElementById('flashContainer');
+        if (!container) return;
+        for (let i = 0; i < count; i++) {
+            const flash = document.createElement('div');
+            flash.classList.add('flash');
+            const size = Math.random() * 7 + 2;
+            flash.style.width = `${size}px`;
+            flash.style.height = `${size}px`;
+            flash.style.left = `${Math.random() * 100}%`;
+            flash.style.top = `${Math.random() * 100}%`;
+            const duration = Math.random() * 2.2 + 1.2;
+            flash.style.animationDuration = `${duration}s`;
+            flash.style.animationDelay = `${Math.random() * 6}s`;
+            container.appendChild(flash);
+        }
+    }
+
+    // 鼠标轨迹闪光效果 (增强flash点缀)
+    let mouseTrace = null;
+    function initMouseSpark() {
+        document.body.addEventListener('mousemove', (e) => {
+            if (!mouseTrace) {
+                const spark = document.createElement('div');
+                spark.style.position = 'fixed';
+                spark.style.width = '9px';
+                spark.style.height = '9px';
+                spark.style.borderRadius = '50%';
+                spark.style.backgroundColor = 'rgba(255,255,240,0.55)';
+                spark.style.filter = 'blur(2.5px)';
+                spark.style.pointerEvents = 'none';
+                spark.style.zIndex = '9999';
+                spark.style.transition = 'opacity 0.4s ease';
+                document.body.appendChild(spark);
+                mouseTrace = spark;
+            }
+            mouseTrace.style.left = e.clientX - 5 + 'px';
+            mouseTrace.style.top = e.clientY - 5 + 'px';
+            mouseTrace.style.opacity = '0.9';
+            clearTimeout(window.sparkHide);
+            window.sparkHide = setTimeout(() => {
+                if (mouseTrace) mouseTrace.style.opacity = '0';
+            }, 180);
+        });
+    }
+
+    // 邮箱点击复制提示
+    function setupFlashMessages() {
+        const emailDiv = document.getElementById('emailHint');
+
+        const showToast = (msg) => {
+            const toast = document.createElement('div');
+            toast.innerText = msg;
+            toast.style.position = 'fixed';
+            toast.style.bottom = '30px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = '#1c1c1c';
+            toast.style.color = '#fff';
+            toast.style.padding = '12px 28px';
+            toast.style.borderRadius = '60px';
+            toast.style.fontSize = '0.85rem';
+            toast.style.border = '1px solid rgba(255,255,255,0.2)';
+            toast.style.backdropFilter = 'blur(12px)';
+            toast.style.zIndex = '10000';
+            toast.style.fontWeight = '400';
+            toast.style.boxShadow = '0 12px 25px rgba(0,0,0,0.5)';
+            toast.style.pointerEvents = 'none';
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 2100);
+        };
+
+        if (emailDiv) {
+            emailDiv.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = "nzcharityboard@gmail.com";
+                navigator.clipboard.writeText(email).then(() => {
+                    showToast('📧 邮箱地址已复制: nzcharityboard@gmail.com');
+                }).catch(() => {
+                    showToast('📧 联系邮箱: nzcharityboard@gmail.com');
+                });
+            });
+        }
+    }
+
+    // 额外漂浮闪光的随机光晕
+    function addFloatingGlowBursts() {
+        const glowParent = document.createElement('div');
+        glowParent.style.position = 'fixed';
+        glowParent.style.top = '0';
+        glowParent.style.left = '0';
+        glowParent.style.width = '100%';
+        glowParent.style.height = '100%';
+        glowParent.style.pointerEvents = 'none';
+        glowParent.style.zIndex = '6';
+        document.body.appendChild(glowParent);
+        
+        setInterval(() => {
+            const burst = document.createElement('div');
+            const size = Math.random() * 70 + 30;
+            burst.style.position = 'absolute';
+            burst.style.width = `${size}px`;
+            burst.style.height = `${size}px`;
+            burst.style.background = `radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,240,0) 80%)`;
+            burst.style.borderRadius = '50%';
+            burst.style.left = `${Math.random() * 100}%`;
+            burst.style.top = `${Math.random() * 100}%`;
+            burst.style.filter = 'blur(12px)';
+            burst.style.opacity = '0.5';
+            burst.style.animation = 'fadeAway 1.2s forwards';
+            if (!document.querySelector('#fadeKeyframes')) {
+                const styleSheet = document.createElement('style');
+                styleSheet.id = 'fadeKeyframes';
+                styleSheet.innerHTML = `@keyframes fadeAway { 0% { opacity: 0.5; transform: scale(0.4); } 100% { opacity: 0; transform: scale(1.6); } }`;
+                document.head.appendChild(styleSheet);
+            }
+            glowParent.appendChild(burst);
+            setTimeout(() => burst.remove(), 1300);
+        }, 1700);
+    }
+
+    // 文字柔和闪烁闪光
+    function applyTextSpark() {
+        const importantText = document.querySelectorAll('.trust-title, .construction-message strong');
+        const styleGlow = document.createElement('style');
+        styleGlow.textContent = `
+            @keyframes gentleFlash {
+                0% { text-shadow: 0 0 0px rgba(255,255,255,0.1);}
+                100% { text-shadow: 0 0 7px rgba(255,255,250,0.5);}
+            }
+        `;
+        document.head.appendChild(styleGlow);
+        importantText.forEach(el => {
+            el.style.animation = 'gentleFlash 2.3s infinite alternate';
+        });
+    }
+
+    // 周期性柔和全局光感 "闪光" 体验
+    function ambientFlashPulse() {
+        setInterval(() => {
+            const overlayFlash = document.createElement('div');
+            overlayFlash.style.position = 'fixed';
+            overlayFlash.style.top = '0';
+            overlayFlash.style.left = '0';
+            overlayFlash.style.width = '100%';
+            overlayFlash.style.height = '100%';
+            overlayFlash.style.backgroundColor = 'rgba(255,255,245,0.04)';
+            overlayFlash.style.pointerEvents = 'none';
+            overlayFlash.style.zIndex = '9';
+            overlayFlash.style.transition = 'opacity 0.2s';
+            document.body.appendChild(overlayFlash);
+            setTimeout(() => { overlayFlash.style.opacity = '0'; setTimeout(() => overlayFlash.remove(), 280); }, 70);
+        }, 3800);
+    }
+
+    // 为coming-soon卡片增加微小的动态闪光粒子
+    function enhanceCardSparkle() {
+        const card = document.querySelector('.coming-soon-card');
+        if (!card) return;
+        setInterval(() => {
+            const shimmerDot = document.createElement('div');
+            shimmerDot.style.position = 'absolute';
+            shimmerDot.style.width = '3px';
+            shimmerDot.style.height = '3px';
+            shimmerDot.style.backgroundColor = '#ffffffc9';
+            shimmerDot.style.borderRadius = '50%';
+            shimmerDot.style.opacity = '0.8';
+            shimmerDot.style.pointerEvents = 'none';
+            shimmerDot.style.left = `${Math.random() * 100}%`;
+            shimmerDot.style.top = `${Math.random() * 100}%`;
+            shimmerDot.style.filter = 'blur(0.6px)';
+            shimmerDot.style.zIndex = '25';
+            card.style.position = 'relative';
+            card.appendChild(shimmerDot);
+            setTimeout(() => {
+                shimmerDot.style.transform = 'scale(2.2)';
+                shimmerDot.style.opacity = '0';
+                setTimeout(() => shimmerDot.remove(), 350);
+            }, 30);
+        }, 950);
+    }
+
+    // 背景光晕渐变移动制造动态闪光感
+    function dynamicBgGradient() {
+        const movingGlow = document.createElement('div');
+        movingGlow.style.position = 'fixed';
+        movingGlow.style.width = '100%';
+        movingGlow.style.height = '100%';
+        movingGlow.style.background = 'radial-gradient(circle at 30% 40%, rgba(255,255,255,0.02) 0%, transparent 75%)';
+        movingGlow.style.pointerEvents = 'none';
+        movingGlow.style.zIndex = '2';
+        document.body.appendChild(movingGlow);
+        let step = 0;
+        setInterval(() => {
+            step = (step + 1.2) % 360;
+            const xOffset = 35 + Math.sin(step * Math.PI / 180) * 18;
+            const yOffset = 45 + Math.cos(step * 0.8) * 22;
+            movingGlow.style.background = `radial-gradient(circle at ${xOffset}% ${yOffset}%, rgba(255,255,245,0.045) 0%, transparent 75%)`;
+        }, 2600);
+    }
+
+    // 动态随机额外闪光点飘移
+    function flyingFlashes() {
+        const flyContainer = document.createElement('div');
+        flyContainer.style.position = 'fixed';
+        flyContainer.style.top = '0';
+        flyContainer.style.left = '0';
+        flyContainer.style.width = '100%';
+        flyContainer.style.height = '100%';
+        flyContainer.style.pointerEvents = 'none';
+        flyContainer.style.zIndex = '7';
+        document.body.appendChild(flyContainer);
+        setInterval(() => {
+            const fly = document.createElement('div');
+            fly.style.position = 'absolute';
+            fly.style.width = '4px';
+            fly.style.height = '4px';
+            fly.style.backgroundColor = 'rgba(255, 250, 210, 0.9)';
+            fly.style.borderRadius = '50%';
+            fly.style.filter = 'blur(0.7px)';
+            fly.style.left = `${Math.random() * 100}%`;
+            fly.style.top = `${Math.random() * 100}%`;
+            fly.style.opacity = '0.9';
+            fly.style.animation = 'flyShine 1s ease-out forwards';
+            if (!document.querySelector('#flyKey')) {
+                const flyK = document.createElement('style');
+                flyK.id = 'flyKey';
+                flyK.innerHTML = `@keyframes flyShine { 0% { transform: translateY(0) scale(0.8); opacity: 0.9; } 100% { transform: translateY(-30px) scale(1.6); opacity: 0; } }`;
+                document.head.appendChild(flyK);
+            }
+            flyContainer.appendChild(fly);
+            setTimeout(() => fly.remove(), 1000);
+        }, 1200);
+    }
+
+    function initAllFlash() {
+        generateFlashes(140);
+        initMouseSpark();
+        setupFlashMessages();
+        addFloatingGlowBursts();
+        applyTextSpark();
+        ambientFlashPulse();
+        enhanceCardSparkle();
+        dynamicBgGradient();
+        flyingFlashes();
+        console.log("%c✨ New Zealand Social Charitable Trust Board ✨ | Design by Dr. Cache Y | 2026 | Bold footer & Flash Symphony", "color: #eeeeee; background: #111; font-size: 13px; padding: 6px 12px; border-radius: 10px; font-weight: 500;");
+    }
+
+    window.addEventListener('DOMContentLoaded', initAllFlash);
+</script>
+</body>
+</html>
